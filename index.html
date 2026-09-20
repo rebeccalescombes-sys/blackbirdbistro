@@ -8,6 +8,7 @@
   <style>
     :root{
       --cream:#f3ecdf;
+      --paper:#fbf7f0;
       --ink:#171411;
       --wine:#6c1824;
       --muted:#746b62;
@@ -21,6 +22,9 @@
       color:var(--ink);
       font-family:Arial,Helvetica,sans-serif;
     }
+    body.modal-open{overflow:hidden}
+    button,input{font:inherit}
+
     .hero{
       min-height:100vh;
       min-height:100svh;
@@ -38,12 +42,7 @@
       content:"";
       position:absolute;
       inset:0;
-      background:linear-gradient(
-        to bottom,
-        rgba(8,10,14,.03) 20%,
-        rgba(8,8,8,.12) 55%,
-        rgba(8,8,8,.68) 100%
-      );
+      background:linear-gradient(to bottom,rgba(8,10,14,.03) 20%,rgba(8,8,8,.12) 55%,rgba(8,8,8,.68) 100%);
     }
     .hero-copy{
       position:relative;
@@ -54,7 +53,7 @@
       max-width:900px;
       padding-bottom:8px;
     }
-    .kicker,.opening,.location{
+    .kicker,.opening{
       font-size:.73rem;
       letter-spacing:.30em;
       text-transform:uppercase;
@@ -68,11 +67,7 @@
       font:400 clamp(1.05rem,2.2vw,1.4rem)/1.5 Georgia,"Times New Roman",serif;
       margin:0 auto 20px;
     }
-    .opening{
-      font-weight:700;
-      margin:22px 0 0;
-    }
-    .location{margin-top:12px}
+    .opening{font-weight:700;margin:22px 0 0}
     .down{
       display:inline-block;
       margin-top:26px;
@@ -80,18 +75,14 @@
       text-decoration:none;
       font-size:1.5rem;
     }
+
     .intro{
       padding:clamp(65px,9vw,120px) 24px;
       text-align:center;
       background:var(--cream);
     }
-    .intro-inner{
-      max-width:760px;
-      margin:auto;
-    }
-    .wordmark{
-      margin:0 0 38px;
-    }
+    .intro-inner{max-width:760px;margin:auto}
+    .wordmark{margin:0 0 38px}
     .wordmark-main{
       font-family:"Arial Narrow",Arial,Helvetica,sans-serif;
       font-stretch:condensed;
@@ -131,6 +122,7 @@
     .cta{
       display:inline-block;
       border:1px solid var(--ink);
+      background:transparent;
       padding:15px 22px 14px;
       text-decoration:none;
       color:var(--ink);
@@ -138,19 +130,12 @@
       letter-spacing:.20em;
       font-size:.7rem;
       transition:.2s;
+      cursor:pointer;
     }
-    .cta:hover{
-      background:var(--ink);
-      color:var(--cream);
-    }
-    .email{
-      margin-top:26px !important;
-      font:400 .85rem/1.4 Arial,Helvetica,sans-serif !important;
-    }
-    .email a{
-      color:var(--wine);
-      text-decoration:none;
-    }
+    .cta:hover{background:var(--ink);color:var(--cream)}
+    .email{margin-top:26px!important;font:400 .85rem/1.4 Arial,Helvetica,sans-serif!important}
+    .email a{color:var(--wine);text-decoration:none}
+
     footer{
       text-align:center;
       padding:0 20px 34px;
@@ -160,10 +145,107 @@
       color:#81786f;
       background:var(--cream);
     }
+
+    /* Signup modal */
+    .modal{
+      position:fixed;
+      inset:0;
+      z-index:1000;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:22px;
+      background:rgba(17,14,12,.72);
+      backdrop-filter:blur(5px);
+    }
+    .modal.is-open{display:flex}
+    .modal-card{
+      position:relative;
+      width:min(560px,100%);
+      background:var(--paper);
+      padding:clamp(28px,6vw,52px);
+      box-shadow:0 28px 80px rgba(0,0,0,.35);
+      border-top:3px solid var(--wine);
+    }
+    .modal-close{
+      position:absolute;
+      top:14px;
+      right:16px;
+      border:0;
+      background:transparent;
+      font-size:1.8rem;
+      line-height:1;
+      cursor:pointer;
+      color:var(--ink);
+    }
+    .modal-kicker{
+      margin:0 0 14px;
+      color:var(--wine);
+      text-transform:uppercase;
+      letter-spacing:.24em;
+      font-size:.68rem;
+    }
+    .modal h2{
+      margin:0 0 12px;
+      font:400 clamp(2rem,5vw,3rem)/1.05 Georgia,"Times New Roman",serif;
+    }
+    .modal-copy{
+      margin:0 0 28px;
+      color:#514a44;
+      font:400 1rem/1.65 Georgia,"Times New Roman",serif;
+    }
+    .field{margin-bottom:18px;text-align:left}
+    .field label{
+      display:block;
+      margin-bottom:7px;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      font-size:.66rem;
+    }
+    .field input{
+      width:100%;
+      border:1px solid #bcb1a4;
+      background:#fffdf9;
+      padding:13px 14px;
+      color:var(--ink);
+      outline:none;
+    }
+    .field input:focus{border-color:var(--wine);box-shadow:0 0 0 2px rgba(108,24,36,.08)}
+    .consent{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      margin:18px 0 24px;
+      text-align:left;
+      color:#5b534c;
+      font-size:.78rem;
+      line-height:1.45;
+    }
+    .consent input{margin-top:3px}
+    .submit-btn{
+      width:100%;
+      border:1px solid var(--ink);
+      background:var(--ink);
+      color:var(--paper);
+      padding:15px 18px;
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      font-size:.7rem;
+      cursor:pointer;
+    }
+    .submit-btn:hover{background:var(--wine);border-color:var(--wine)}
+    .privacy{
+      margin:16px 0 0!important;
+      font:400 .7rem/1.5 Arial,Helvetica,sans-serif!important;
+      color:#80766d!important;
+    }
+    .honeypot{display:none!important}
+
     @media(max-width:600px){
       .hero{background-position:58% center}
       .details{display:grid;gap:10px}
       .wordmark-sub{letter-spacing:.22em}
+      .modal-card{padding:34px 22px 28px}
     }
   </style>
 </head>
@@ -198,9 +280,7 @@
           <span>Opening Early 2027</span>
         </div>
 
-        <a class="cta" href="mailto:hello@blackbirdonmesquite.com?subject=Blackbird%20Opening%20Updates">
-          Join the opening list
-        </a>
+        <button class="cta" type="button" id="openSignup">Sign up for updates</button>
 
         <p class="email">
           <a href="mailto:hello@blackbirdonmesquite.com">hello@blackbirdonmesquite.com</a>
@@ -210,5 +290,89 @@
   </main>
 
   <footer>© 2026 Blackbird Bistro &amp; Wine Bar</footer>
+
+  <div class="modal" id="signupModal" role="dialog" aria-modal="true" aria-labelledby="signupTitle">
+    <div class="modal-card">
+      <button class="modal-close" type="button" id="closeSignup" aria-label="Close">×</button>
+      <p class="modal-kicker">Be the first to know</p>
+      <h2 id="signupTitle">Follow Blackbird's opening.</h2>
+      <p class="modal-copy">
+        Join the list for opening news, first looks, menu previews and reservation announcements.
+      </p>
+
+      <!--
+        This form uses FormSubmit.co so it can work on a static GitHub Pages site.
+        The first submission will trigger a verification email to hello@blackbirdonmesquite.com.
+        After that verification, future signups will be delivered to that inbox.
+      -->
+      <form action="https://formsubmit.co/hello@blackbirdonmesquite.com" method="POST">
+        <input type="hidden" name="_subject" value="New Blackbird Opening List Signup">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_next" value="https://blackbirdonmesquite.com/?subscribed=1#about">
+        <input class="honeypot" type="text" name="_honey" tabindex="-1" autocomplete="off">
+
+        <div class="field">
+          <label for="firstName">First name</label>
+          <input id="firstName" name="First Name" type="text" autocomplete="given-name" required>
+        </div>
+
+        <div class="field">
+          <label for="lastName">Last name <span aria-hidden="true">(optional)</span></label>
+          <input id="lastName" name="Last Name" type="text" autocomplete="family-name">
+        </div>
+
+        <div class="field">
+          <label for="email">Email address</label>
+          <input id="email" name="Email" type="email" autocomplete="email" required>
+        </div>
+
+        <label class="consent">
+          <input type="checkbox" name="Consent" value="Yes" required>
+          <span>I agree to receive occasional Blackbird Bistro &amp; Wine Bar opening updates by email.</span>
+        </label>
+
+        <button class="submit-btn" type="submit">Join the list</button>
+        <p class="privacy">No spam. Just Blackbird news, opening updates and occasional invitations.</p>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById('signupModal');
+    const openBtn = document.getElementById('openSignup');
+    const closeBtn = document.getElementById('closeSignup');
+
+    function openModal(){
+      modal.classList.add('is-open');
+      document.body.classList.add('modal-open');
+      setTimeout(() => document.getElementById('firstName').focus(), 50);
+    }
+    function closeModal(){
+      modal.classList.remove('is-open');
+      document.body.classList.remove('modal-open');
+      openBtn.focus();
+    }
+
+    openBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+      if(e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+    });
+
+    const params = new URLSearchParams(window.location.search);
+    if(params.get('subscribed') === '1'){
+      const thanks = document.createElement('p');
+      thanks.textContent = "You're on the list. We'll keep you posted.";
+      thanks.style.marginTop = '22px';
+      thanks.style.fontFamily = 'Georgia, Times New Roman, serif';
+      thanks.style.color = '#6c1824';
+      document.querySelector('.intro-inner').appendChild(thanks);
+      history.replaceState({}, document.title, window.location.pathname + '#about');
+    }
+  </script>
 </body>
 </html>
