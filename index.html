@@ -300,41 +300,32 @@
         Join the list for opening news, first looks, menu previews and reservation announcements.
       </p>
 
-      <!--
-        This form uses FormSubmit.co so it can work on a static GitHub Pages site.
-        The first submission will trigger a verification email to hello@blackbirdonmesquite.com.
-        After that verification, future signups will be delivered to that inbox.
-      -->
-      <form action="https://formsubmit.co/hello@blackbirdonmesquite.com" method="POST">
-        <input type="hidden" name="_subject" value="New Blackbird Opening List Signup">
-        <input type="hidden" name="_template" value="table">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_next" value="https://blackbirdonmesquite.com/?subscribed=1#about">
-        <input class="honeypot" type="text" name="_honey" tabindex="-1" autocomplete="off">
-
+      <form id="blackbirdSignup" action="https://assets.mailerlite.com/jsonp/2668617/forms/199911113654011893/subscribe" method="POST">
         <div class="field">
           <label for="firstName">First name</label>
-          <input id="firstName" name="First Name" type="text" autocomplete="given-name" required>
+          <input id="firstName" name="fields[name]" type="text" autocomplete="given-name" required>
         </div>
-
         <div class="field">
-          <label for="lastName">Last name <span aria-hidden="true">(optional)</span></label>
-          <input id="lastName" name="Last Name" type="text" autocomplete="family-name">
+          <label for="lastName">Last name</label>
+          <input id="lastName" name="fields[last_name]" type="text" autocomplete="family-name" required>
         </div>
-
         <div class="field">
           <label for="email">Email address</label>
-          <input id="email" name="Email" type="email" autocomplete="email" required>
+          <input id="email" name="fields[email]" type="email" autocomplete="email" required>
         </div>
-
         <label class="consent">
-          <input type="checkbox" name="Consent" value="Yes" required>
+          <input type="checkbox" required>
           <span>I agree to receive occasional Blackbird Bistro &amp; Wine Bar opening updates by email.</span>
         </label>
-
+        <input type="hidden" name="ml-submit" value="1">
+        <input type="hidden" name="anticsrf" value="true">
         <button class="submit-btn" type="submit">Join the list</button>
         <p class="privacy">No spam. Just Blackbird news, opening updates and occasional invitations.</p>
       </form>
+      <div id="signupSuccess" hidden>
+        <h2>You’re on the list.</h2>
+        <p class="modal-copy">Watch your inbox for a note from Blackbird.</p>
+      </div>
     </div>
   </div>
 
@@ -363,16 +354,30 @@
       if(e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
     });
 
-    const params = new URLSearchParams(window.location.search);
-    if(params.get('subscribed') === '1'){
-      const thanks = document.createElement('p');
-      thanks.textContent = "You're on the list. We'll keep you posted.";
-      thanks.style.marginTop = '22px';
-      thanks.style.fontFamily = 'Georgia, Times New Roman, serif';
-      thanks.style.color = '#6c1824';
-      document.querySelector('.intro-inner').appendChild(thanks);
-      history.replaceState({}, document.title, window.location.pathname + '#about');
-    }
+    const signupForm = document.getElementById('blackbirdSignup');
+    const signupSuccess = document.getElementById('signupSuccess');
+
+    signupForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const submitBtn = signupForm.querySelector('.submit-btn');
+      const originalText = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Joining...';
+
+      try {
+        await fetch(signupForm.action, {
+          method: 'POST',
+          body: new FormData(signupForm),
+          mode: 'no-cors'
+        });
+        signupForm.hidden = true;
+        signupSuccess.hidden = false;
+      } catch (error) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+        alert('We could not complete your signup. Please try again.');
+      }
+    });
   </script>
 </body>
 </html>
